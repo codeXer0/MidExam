@@ -100,9 +100,9 @@ public class Calculator extends JFrame {
 
 		JButton historyButton = new JButton("History"); // 계산기록 버튼 생성
 		historyButton.setFocusPainted(false); // 포커스 테두리 표시안함
-		panel.add(historyButton); // 패널에 기록버튼 부착
+		panel.add(historyButton); // 패널에 기록버튼 배치
 
-		this.add(panel, BorderLayout.SOUTH);
+		this.add(panel, BorderLayout.SOUTH);// South영역에 패널 배치
 
 	}
 
