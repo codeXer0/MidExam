@@ -70,10 +70,39 @@ public class Calculator extends JFrame {
 		JButton b19 = new JButton(".");
 		JButton b20 = new JButton("=");
 
+		panel.add(b1);
+		panel.add(b2);
+		panel.add(b3);
+		panel.add(b4);
+		panel.add(b5);
+		panel.add(b6);
+		panel.add(b7);
+		panel.add(b8);
+		panel.add(b9);
+		panel.add(b10);
+		panel.add(b11);
+		panel.add(b12);
+		panel.add(b13);
+		panel.add(b14);
+		panel.add(b15);
+		panel.add(b16);
+		panel.add(b17);
+		panel.add(b18);
+		panel.add(b19);
+		panel.add(b20);
+
+		add(panel, BorderLayout.CENTER);
+
 	}
 
 	void showSouth() {
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(); // 남쪽영역 패널 생성
+
+		JButton historyButton = new JButton("History"); // 계산기록 버튼 생성
+		historyButton.setFocusPainted(false); // 포커스 테두리 표시안함
+		panel.add(historyButton); // 패널에 기록버튼 부착
+
+		this.add(panel, BorderLayout.SOUTH);
 
 	}
 
