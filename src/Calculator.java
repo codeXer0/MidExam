@@ -18,8 +18,9 @@ import javax.swing.JTextField;
  * 
  */
 public class Calculator extends JFrame {
-	JTextField result;
+	// 각 연산버튼 변수 멤버 필드로 선언
 	JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+	JTextField result;
 
 	public Calculator() {
 		this.setTitle("계산기"); // "계산기"로 제목 설정
@@ -53,26 +54,26 @@ public class Calculator extends JFrame {
 		panel.setBackground(Color.black);
 
 		// 계산기 연산 버튼 각각 생성
-		JButton b1 = new JButton("CE");
-		JButton b2 = new JButton("C");
-		JButton b3 = new JButton("←");
-		JButton b4 = new JButton("÷");
-		JButton b5 = new JButton("7");
-		JButton b6 = new JButton("8");
-		JButton b7 = new JButton("9");
-		JButton b8 = new JButton("×");
-		JButton b9 = new JButton("4");
-		JButton b10 = new JButton("5");
-		JButton b11 = new JButton("6");
-		JButton b12 = new JButton("-");
-		JButton b13 = new JButton("1");
-		JButton b14 = new JButton("2");
-		JButton b15 = new JButton("3");
-		JButton b16 = new JButton("+");
-		JButton b17 = new JButton("±");
-		JButton b18 = new JButton("0");
-		JButton b19 = new JButton(".");
-		JButton b20 = new JButton("=");
+		b1 = new JButton("CE");
+		b2 = new JButton("C");
+		b3 = new JButton("←");
+		b4 = new JButton("÷");
+		b5 = new JButton("7");
+		b6 = new JButton("8");
+		b7 = new JButton("9");
+		b8 = new JButton("×");
+		b9 = new JButton("4");
+		b10 = new JButton("5");
+		b11 = new JButton("6");
+		b12 = new JButton("-");
+		b13 = new JButton("1");
+		b14 = new JButton("2");
+		b15 = new JButton("3");
+		b16 = new JButton("+");
+		b17 = new JButton("±");
+		b18 = new JButton("0");
+		b19 = new JButton(".");
+		b20 = new JButton("=");
 
 		// panel에 연산버튼 배치
 		panel.add(b1);
