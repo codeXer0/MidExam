@@ -11,19 +11,20 @@ import javax.swing.JTextField;
  * 기본적인 사칙연산을 할 수 있는 계산기 클래스입니다.
  * 
  * @author 2021011939 이동재
- * @version
+ * @version 2022-03
  * 
  * @created 2024-10-18
  * @lastModified 2024-10-19
  * 
  */
 public class Calculator extends JFrame {
-	JTextField result; // North
+	JTextField result;
+	JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
 
 	public Calculator() {
-		this.setTitle("계산기");
+		this.setTitle("계산기"); // "계산기"로 제목 설정
 		this.setLayout(new BorderLayout());
-		this.setSize(400, 600);
+		this.setSize(400, 600); // 가로 400, 세로 600픽셀 설정
 
 		showNorth();
 		showCenter();
@@ -44,8 +45,11 @@ public class Calculator extends JFrame {
 	}
 
 	void showCenter() {
-		JPanel panel = new JPanel(); // 버튼 판넬
-		panel.setLayout(new GridLayout(5, 4, 3, 3));
+		// 버튼 판넬 생성
+		JPanel panel = new JPanel();
+		// 5행 4열 좌우 7, 상하 간격 7인 그리드아웃을 panel에 생성
+		panel.setLayout(new GridLayout(5, 4, 7, 7));
+		// panel의 배경색을 black으로 변경
 		panel.setBackground(Color.black);
 
 		// 계산기 연산버튼 각각 생성
@@ -70,6 +74,7 @@ public class Calculator extends JFrame {
 		JButton b19 = new JButton(".");
 		JButton b20 = new JButton("=");
 
+		// panel에 연산버튼 배치
 		panel.add(b1);
 		panel.add(b2);
 		panel.add(b3);
@@ -91,18 +96,23 @@ public class Calculator extends JFrame {
 		panel.add(b19);
 		panel.add(b20);
 
+		// Center영역에 패널 배치
 		add(panel, BorderLayout.CENTER);
 
 	}
 
 	void showSouth() {
-		JPanel panel = new JPanel(); // 남쪽영역 패널 생성
+		// 남쪽영역 패널 생성
+		JPanel panel = new JPanel();
+		// 계산기록 버튼 생성
+		JButton historyButton = new JButton("History");
+		// 포커스 테두리 표시안함
+		historyButton.setFocusPainted(false);
+		// 패널에 기록버튼 배치
+		panel.add(historyButton);
 
-		JButton historyButton = new JButton("History"); // 계산기록 버튼 생성
-		historyButton.setFocusPainted(false); // 포커스 테두리 표시안함
-		panel.add(historyButton); // 패널에 기록버튼 배치
-
-		this.add(panel, BorderLayout.SOUTH);// South영역에 패널 배치
+		// South영역에 패널 배치
+		this.add(panel, BorderLayout.SOUTH);
 
 	}
 
