@@ -52,7 +52,7 @@ public class Calculator extends JFrame {
 		// panel의 배경색을 black으로 변경
 		panel.setBackground(Color.black);
 
-		// 계산기 연산버튼 각각 생성
+		// 계산기 연산 버튼 각각 생성
 		JButton b1 = new JButton("CE");
 		JButton b2 = new JButton("C");
 		JButton b3 = new JButton("←");
