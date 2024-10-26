@@ -11,16 +11,21 @@ import javax.swing.JTextField;
  * 기본적인 사칙연산을 할 수 있는 계산기 클래스입니다.
  * 
  * @author 2021011939 이동재
- * @version 2022-03
+ * @version Eclipse 2022-03
  * 
  * @created 2024-10-18
- * @lastModified 2024-10-19
+ * @lastModified 2024-10-26
  * 
  */
 public class Calculator extends JFrame {
-	// 각 연산버튼 변수 멤버 필드로 선언
+	// 각 연산버튼 변수 멤버필드로 선언
 	JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
 	JTextField result;
+	JButton button;
+
+	// 연산버튼 생성을 위한 buttons 배열 생성
+	String[] buttons = { "CE", "C", "←", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".",
+			"=" };
 
 	public Calculator() {
 		this.setTitle("계산기"); // "계산기"로 제목 설정
@@ -41,6 +46,9 @@ public class Calculator extends JFrame {
 		result = new JTextField("0.xxx", 38);
 		result.setEditable(false);
 		panel.add(result);
+		/**
+		 * JFrame의 NORTH 영역에 panel을 배치
+		 */
 		add(panel, BorderLayout.NORTH);
 
 	}
@@ -53,67 +61,49 @@ public class Calculator extends JFrame {
 		// panel의 배경색을 black으로 변경
 		panel.setBackground(Color.black);
 
-		// 계산기 연산 버튼 각각 생성
-		b1 = new JButton("CE");
-		b2 = new JButton("C");
-		b3 = new JButton("←");
-		b4 = new JButton("÷");
-		b5 = new JButton("7");
-		b6 = new JButton("8");
-		b7 = new JButton("9");
-		b8 = new JButton("×");
-		b9 = new JButton("4");
-		b10 = new JButton("5");
-		b11 = new JButton("6");
-		b12 = new JButton("-");
-		b13 = new JButton("1");
-		b14 = new JButton("2");
-		b15 = new JButton("3");
-		b16 = new JButton("+");
-		b17 = new JButton("±");
-		b18 = new JButton("0");
-		b19 = new JButton(".");
-		b20 = new JButton("=");
-
-		// panel에 연산버튼 배치
-		panel.add(b1);
-		panel.add(b2);
-		panel.add(b3);
-		panel.add(b4);
-		panel.add(b5);
-		panel.add(b6);
-		panel.add(b7);
-		panel.add(b8);
-		panel.add(b9);
-		panel.add(b10);
-		panel.add(b11);
-		panel.add(b12);
-		panel.add(b13);
-		panel.add(b14);
-		panel.add(b15);
-		panel.add(b16);
-		panel.add(b17);
-		panel.add(b18);
-		panel.add(b19);
-		panel.add(b20);
-
-		// Center영역에 패널 배치
+		/**
+		 * buttons 배열과 for반복문을 사용하여 연산버튼을 생성
+		 */
+		for (int i = 0; i < buttons.length; i++) {
+			JButton button = new JButton(buttons[i]);
+			/**
+			 * 포커스 테두리 제거
+			 */
+			button.setFocusPainted(false);
+			/**
+			 * 패널에 버튼 배치
+			 */
+			panel.add(button);
+		}
+		/**
+		 * JFrame의 CENTER 영역에 panel을 배치
+		 */
 		add(panel, BorderLayout.CENTER);
 
 	}
 
 	void showSouth() {
-		// 남쪽영역 패널 생성
+		/**
+		 * 남쪽영역 패널 생성
+		 */
 		JPanel panel = new JPanel();
-		// 계산기록 버튼 생성
+		/**
+		 * 계산기록 버튼 생성
+		 */
 		JButton historyButton = new JButton("History");
-		// 포커스 테두리 표시안함
+		/**
+		 * 포커스 테두리 제거
+		 */
 		historyButton.setFocusPainted(false);
-		// 패널에 기록버튼 배치
+		/**
+		 * 패널에 기록버튼 배치
+		 */ // 패널에 기록버튼 배치
 		panel.add(historyButton);
 
-		// South영역에 패널 배치
-		this.add(panel, BorderLayout.SOUTH);
+		/**
+		 * JFrame의 SOUTH 영역에 panel을 배치
+		 */
+		add(panel, BorderLayout.SOUTH);
 
 	}
 
