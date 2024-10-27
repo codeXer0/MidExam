@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  * 기본적인 사칙연산을 할 수 있는 계산기 클래스입니다.
@@ -15,7 +16,7 @@ import javax.swing.JTextField;
  * @version Eclipse 2022-03
  * 
  * @created 2024-10-18
- * @lastModified 2024-10-26
+ * @lastModified 2024-10-27
  * 
  */
 public class Calculator extends JFrame {
@@ -31,7 +32,7 @@ public class Calculator extends JFrame {
 		this.setTitle("계산기");
 		this.setLayout(new BorderLayout());
 		/**
-		 * 사이즈 설정
+		 * Frame 사이즈 설정
 		 * 
 		 * @param 폭  400
 		 * @param 넓이 600
@@ -58,16 +59,17 @@ public class Calculator extends JFrame {
 		/**
 		 * 결과창 JTextField 생성 및 텍스트필드 수정 가능여부 설정
 		 */
-		result = new JTextField("계산결과창");
+		result = new JTextField("123가나다ABC");
 		result.setEditable(false);
 		/**
 		 * 계산결과창 폰트 설정
 		 * 
-		 * 폰트는 "TimesRoman", 이탤릭 스타일, 크기는 40
+		 * 폰트이름 = "TimesRoman", 폰트스타일 = PLAIN, 폰트크기 = 40픽셀
 		 * 
-		 * 추후에 수정
+		 * (** 결과창 문자열 우측 정렬 **) 실제 계산기처럼!!
 		 */
-		result.setFont(new Font("TimesRoman", Font.ITALIC, 40));
+		result.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+		result.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel.add(result);
 		/**
 		 * JFrame의 NORTH 영역에 panel을 배치
