@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -27,10 +28,7 @@ public class Calculator extends JFrame {
 			"=" };
 
 	public Calculator() {
-		this.setTitle("계산기"); // "계산기"로 제목 설정
-		/**
-		 * 
-		 */
+		this.setTitle("계산기");
 		this.setLayout(new BorderLayout());
 		/**
 		 * 사이즈 설정
@@ -56,11 +54,20 @@ public class Calculator extends JFrame {
 		 * FlowLayout -> BorderLayout
 		 */
 		JPanel panel = new JPanel(new BorderLayout());
+
 		/**
-		 * JTextField 수정 가능여부 설정
+		 * 결과창 JTextField 생성 및 텍스트필드 수정 가능여부 설정
 		 */
-		result = new JTextField("0.xxxxxxxxxxxx");
+		result = new JTextField("계산결과창");
 		result.setEditable(false);
+		/**
+		 * 계산결과창 폰트 설정
+		 * 
+		 * 폰트는 "TimesRoman", 이탤릭 스타일, 크기는 40
+		 * 
+		 * 추후에 수정
+		 */
+		result.setFont(new Font("TimesRoman", Font.ITALIC, 40));
 		panel.add(result);
 		/**
 		 * JFrame의 NORTH 영역에 panel을 배치
@@ -70,9 +77,17 @@ public class Calculator extends JFrame {
 	}
 
 	void showCenter() {
-		// 버튼 판넬 생성
+		/**
+		 * Center 영역 판넬 생성
+		 * 
+		 * 배치관리자 = GridLayout
+		 * 
+		 * @param rows 5
+		 * @param cols 4
+		 * @param 폭    7
+		 * @param 높이   7
+		 */
 		JPanel panel = new JPanel();
-		// 5행 4열 좌우 7, 상하 간격 7인 그리드아웃을 panel에 생성
 		panel.setLayout(new GridLayout(5, 4, 7, 7));
 		/**
 		 * panel의 배경색을 black으로 변경
@@ -81,7 +96,7 @@ public class Calculator extends JFrame {
 		/**
 		 * buttons 배열과 for반복문을 사용하여 연산버튼을 생성!!
 		 * 
-		 * 포커스 테두리 제거 및 패널 내 버튼 배치
+		 * 포커스 테두리 제거
 		 */
 		for (int i = 0; i < buttons.length; i++) {
 			JButton button = new JButton(buttons[i]);
@@ -102,8 +117,6 @@ public class Calculator extends JFrame {
 		JPanel panel = new JPanel();
 		/**
 		 * 계산기록 버튼 생성 및 포커스 테두리 제거
-		 * 
-		 * 패널 내 버튼 배치
 		 */
 		JButton historyButton = new JButton("History");
 		historyButton.setFocusPainted(false);
