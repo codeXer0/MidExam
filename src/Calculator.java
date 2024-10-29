@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
  * @version Eclipse 2022-03
  * 
  * @created 2024-10-18
- * @lastModified 2024-10-27
+ * @lastModified 2024-10-29
  * 
  */
 public class Calculator extends JFrame {
@@ -25,26 +25,29 @@ public class Calculator extends JFrame {
 	/**
 	 * 연산버튼 생성을 위한 buttons 배열 생성
 	 */
-	String[] buttons = { "CE", "C", "←", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".",
-			"=" };
+	String[] buttons = { "AC", "±", "←", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "🖩", "0",
+			".", "=" };
 
 	public Calculator() {
 		this.setTitle("계산기");
-		this.setLayout(new BorderLayout());
 		/**
 		 * Frame 사이즈 설정
 		 * 
-		 * @param 폭  400
-		 * @param 넓이 600
+		 * @param 폭  350
+		 * @param 넓이 500
 		 */
-		this.setSize(400, 600); //
+		this.setSize(350, 500);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 
 		showNorth();
 		showCenter();
-		showSouth();
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
+
+		showNorth();
+		showCenter();
 
 	}
 
@@ -56,24 +59,27 @@ public class Calculator extends JFrame {
 		 */
 		JPanel panel = new JPanel(new BorderLayout());
 
-		/**
-		 * 결과창 JTextField 생성 및 텍스트필드 수정 가능여부 설정
-		 */
-		result = new JTextField("123가나다ABC");
+		result = new JTextField("0");
 		result.setEditable(false);
 		/**
 		 * 계산결과창 폰트 설정
 		 * 
-		 * 폰트이름 = "TimesRoman", 폰트스타일 = PLAIN, 폰트크기 = 40픽셀
+		 * 폰트이름 = "Dialog", 폰트스타일 = PLAIN, 폰트크기 = 40픽셀
 		 * 
 		 * (** 결과창 문자열 우측 정렬 **) 실제 계산기처럼!!
+		 * 
+		 * 패널의 배경색 & 전경색 설정
+		 * 
+		 * 배경색 -> BLACK / 전경색 -> WHITE
 		 */
-		result.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+		result.setFont(new Font("Dialog", Font.PLAIN, 40));
 		result.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		result.setBackground(Color.BLACK);
+		result.setForeground(Color.WHITE);
+
 		panel.add(result);
-		/**
-		 * JFrame의 NORTH 영역에 panel을 배치
-		 */
+
 		add(panel, BorderLayout.NORTH);
 
 	}
@@ -82,7 +88,7 @@ public class Calculator extends JFrame {
 		/**
 		 * Center 영역 판넬 생성
 		 * 
-		 * 배치관리자 = GridLayout
+		 * 배치관리자는 GridLayout
 		 * 
 		 * @param rows 5
 		 * @param cols 4
@@ -91,9 +97,6 @@ public class Calculator extends JFrame {
 		 */
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 4, 7, 7));
-		/**
-		 * panel의 배경색을 black으로 변경
-		 */
 		panel.setBackground(Color.black);
 		/**
 		 * buttons 배열과 for반복문을 사용하여 연산버튼을 생성!!
@@ -103,31 +106,10 @@ public class Calculator extends JFrame {
 		for (int i = 0; i < buttons.length; i++) {
 			JButton button = new JButton(buttons[i]);
 			button.setFocusPainted(false);
+			button.setFont(new Font("Dialog", Font.BOLD, 20));
 			panel.add(button);
 		}
-		/**
-		 * JFrame의 CENTER 영역에 panel을 배치
-		 */
 		add(panel, BorderLayout.CENTER);
-
-	}
-
-	void showSouth() {
-		/**
-		 * SOUTH 영역 패널 생성
-		 */
-		JPanel panel = new JPanel();
-		/**
-		 * 계산기록 버튼 생성 및 포커스 테두리 제거
-		 */
-		JButton historyButton = new JButton("History");
-		historyButton.setFocusPainted(false);
-		panel.add(historyButton);
-
-		/**
-		 * JFrame의 SOUTH 영역에 panel을 배치
-		 */
-		add(panel, BorderLayout.SOUTH);
 
 	}
 
