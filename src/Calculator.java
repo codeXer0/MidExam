@@ -99,8 +99,8 @@ public class Calculator extends JFrame {
 
 	/**
 	 * 연산자(operator)에 따라 입력받은 num1과 num2에 대한 사칙연산을 수행하여 결과를 반환하는 메소드입니다. 연산자는
-	 * 덧셈("+"), 뺄셈("-"), 곱셈("×"), 나눗셈("÷") 입니다. 나눗셈에서 0으로 나누려 할 경우, 에러 메시지("잘못된
-	 * 입력입니다.")를 출력합니다.
+	 * 덧셈("+"), 뺄셈("-"), 곱셈("×"), 나눗셈("÷"), 나머지("%")입니다. 나눗셈에서 0으로 나누려 할 경우, 에러
+	 * 메시지("잘못된 입력입니다.")를 출력합니다.
 	 * 
 	 * @return 연산 결과를 '문자열'로 반환하며, 나눗셈에서 0으로 나누려 할 경우 오류 메시지를 반환합니다.
 	 * @see <a href="https://kcasey.tistory.com/7">계산기 작성 시 switch,if문 참고 링크</a>
@@ -122,6 +122,9 @@ public class Calculator extends JFrame {
 				result = num1 / num2;
 			else
 				return "잘못된 입력입니다."; // 0으로 나눌 때!!
+			break;
+		case "%":
+			result = num1 % num2;
 			break;
 		}
 		return String.valueOf(result); // 연산결과를 문자열로 반환
