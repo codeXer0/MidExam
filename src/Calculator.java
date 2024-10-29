@@ -31,6 +31,8 @@ public class Calculator extends JFrame {
 	double num1 = 0; // 첫 번째 입력 숫자 저장
 	double num2 = 0; // 두 번째 입력 숫자 저장
 
+	boolean startNewNumber = true; // 새로 입력된 숫자 확인
+
 	public Calculator() {
 		this.setTitle("계산기");
 
@@ -88,11 +90,78 @@ public class Calculator extends JFrame {
 
 	}
 
-	// 연산버튼 클릭 시 동작을 설정하는 ActionListener입니다.
+	/**
+	 * 계산기의 각 연산버튼 클릭 이벤트를 처리하는 ActionListener입니다.
+	 * 
+	 * 사용자가 누른 연산버튼에 따라 숫자 입력, 사칙연산(+, -,×, ÷), 부호 변경(±), 소수점 입력, 나머지 연산(%), 초기화(AC)
+	 * 등의 기능을 수행합니다.
+	 * 
+	 * @param e 버튼 클릭 이벤트를 나타내며, 클릭된 버튼의 텍스트를 통해 기능을 결정합니다.
+	 * 
+	 *          버튼 기능 설명: - "AC": 모든 값을 초기화하고 display를 "0"으로 설정합니다. - "←": 현재 입력된
+	 *          숫자의 마지막 문자를 삭제합니다. 한글자만 남으면 "0"으로 설정됩니다. - "±": 현재 display에 표시된 숫자의
+	 *          부호를 변경합니다. - "%": 나머지 연산을 준비하고 첫 번째 숫자(num1)에 현재 값을 저장합니다. - "÷",
+	 *          "×", "-", "+": 해당 연산자에 따라 사칙연산을 수행하기 위해num1에 현재 값을 저장하고 operator를
+	 *          설정합니다. - "=": 설정된 연산자에 따라 num1과 display에 입력된 두번째 숫자(num2)를 연산하여 결과를
+	 *          display에 표시합니다. - ".": 소수점이 없는 경우 현재 숫자에 소수점을 추가합니다. - 기본 숫자: 숫자 버튼을
+	 *          눌렀을 때 display에 숫자를 추가합니다. 새로운 숫자입력이 시작되면 display를 새 숫자로 대체하고, 그렇지
+	 *          않으면 기존 숫자 뒤에 이어붙입니다.
+	 * 
+	 * @see <a href="https://firstblog912.tistory.com/137">버튼 이벤트 참고 링크</a>
+	 * @see ChatGPT
+	 */
 	ActionListener l = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
+			switch (command) {
+			case "AC": // 초기화
+				display.setText("0");
+				num1 = 0;
+				num2 = 0;
+				operator = "";
+				startNewNumber = true;
+				break;
+			case "←": // 삭제
+				String currentText = display.getText();
+				display.setText(currentText.length() > 1 ? currentText.substring(0, currentText.length() - 1) : "0");
+				break;
+			case "±": // 부호 변경
+				double value = Double.parseDouble(display.getText());
+				display.setText(String.valueOf(value * -1));
+				break;
+			case "%": // 나머지 연산
+				num1 = Double.parseDouble(display.getText());
+				operator = "%";
+				startNewNumber = true;
+				break;
+			case "÷":
+			case "×":
+			case "-":
+			case "+": // 사칙연산
+				num1 = Double.parseDouble(display.getText());
+				operator = command;
+				startNewNumber = true;
+				break;
+			case "=": // 계산 수행
+				num2 = Double.parseDouble(display.getText());
+				display.setText(calculateResult());
+				startNewNumber = true;
+				break;
+			case ".": // 소수점 입력
+				if (!display.getText().contains(".")) {
+					display.setText(display.getText() + ".");
+				}
+				break;
+			default: // 숫자 입력
+				if (startNewNumber) {
+					display.setText(command);
+					startNewNumber = false;
+				} else {
+					display.setText(display.getText().equals("0") ? command : display.getText() + command);
+				}
+				break;
+			}
 
 		}
 	};
@@ -133,4 +202,5 @@ public class Calculator extends JFrame {
 	public static void main(String[] args) {
 		new Calculator();
 	}
+
 }
