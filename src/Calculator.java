@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -29,8 +31,8 @@ public class Calculator extends JFrame {
 	String[] buttons = { "AC", "%", "←", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".",
 			"=" };
 	String operator = ""; // 연산자 저장을 위한 변수 선언
-	double num1 = 0; // 첫 번째 입력 숫자 저장
-	double num2 = 0; // 두 번째 입력 숫자 저장
+	BigDecimal num1 = BigDecimal.ZERO; // 첫 번째 입력 숫자 저장
+	BigDecimal num2 = BigDecimal.ZERO; // 두 번째 입력 숫자 저장
 	boolean startNewNumber = true; // 새로 입력된 숫자 확인
 
 	// 계산 기록 저장을 위한 리스트
@@ -41,9 +43,11 @@ public class Calculator extends JFrame {
 		this.setSize(350, 500);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+
 		showNorth();
 		showCenter();
 		showSouth();
+
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
@@ -140,8 +144,8 @@ public class Calculator extends JFrame {
 			switch (command) {
 			case "AC": // 초기화
 				display.setText("0");
-				num1 = 0;
-				num2 = 0;
+				num1 = BigDecimal.ZERO;
+				num2 = BigDecimal.ZERO;
 				operator = "";
 				startNewNumber = true;
 				break;
@@ -150,11 +154,11 @@ public class Calculator extends JFrame {
 				display.setText(currentText.length() > 1 ? currentText.substring(0, currentText.length() - 1) : "0");
 				break;
 			case "±": // 부호 변경
-				double value = Double.parseDouble(display.getText());
-				display.setText(String.valueOf(value * -1));
+				BigDecimal value = new BigDecimal(display.getText());
+				display.setText(value.negate().toString());
 				break;
 			case "%": // 나머지 연산
-				num1 = Double.parseDouble(display.getText());
+				num1 = new BigDecimal(display.getText());
 				operator = "%";
 				startNewNumber = true;
 				break;
@@ -162,17 +166,14 @@ public class Calculator extends JFrame {
 			case "×":
 			case "-":
 			case "+": // 사칙연산
-				num1 = Double.parseDouble(display.getText());
+				num1 = new BigDecimal(display.getText());
 				operator = command;
 				startNewNumber = true;
 				break;
 			case "=": // 계산 수행
-				num2 = Double.parseDouble(display.getText());
+				num2 = new BigDecimal(display.getText());
 				String result = calculateResult();
 				display.setText(result);
-				/**
-				 * 사용자의 계산 기록을 history 리스트에 저장합니다.
-				 */
 				history.add(num1 + " " + operator + " " + num2 + " = " + result); // 기록 저장
 				startNewNumber = true;
 				break;
@@ -194,40 +195,44 @@ public class Calculator extends JFrame {
 	};
 
 	/**
-	 * 연산자(operator)에 따라 입력받은 num1과 num2에 대한 사칙연산을 수행하여 결과를 반환하는 메소드입니다. 연산자는
-	 * 덧셈("+"), 뺄셈("-"), 곱셈("×"), 나눗셈("÷"), 나머지("%")입니다. 나눗셈에서 0으로 나누려 할 경우, 에러
-	 * 메시지("잘못된 입력입니다.")를 출력합니다.
+	 * 연산자(operator)에 따라 입력받은 num1과 num2에 대한 사칙연산을 수행하여 결과를 반환하는 메소드입니다.
 	 * 
+	 * - 덧셈("+"), 뺄셈("-"), 곱셈("×"), 나눗셈("÷"), 나머지("%") 연산을 지원합니다. - 부동 소수점 계산 오류를
+	 * 방지하기 위해 `BigDecimal`을 사용하여 정밀한 계산을 수행합니다. - 나눗셈 연산의 경우, 0으로 나누려 할 때에는 "잘못된
+	 * 입력입니다."라는 메시지를 반환합니다. - 결과 반환 시 `stripTrailingZeros().toPlainString()`을 사용하여
+	 * 불필요한 소수점을 제거합니다.
+	 *
 	 * @return 연산 결과를 '문자열'로 반환하며, 나눗셈에서 0으로 나누려 할 경우 오류 메시지를 반환합니다.
 	 * @see <a href="https://kcasey.tistory.com/7">계산기 작성 시 switch,if문 참고 링크</a>
 	 */
 	String calculateResult() {
-		double result = 0;
+		BigDecimal result;
 		switch (operator) {
 		case "+":
-			result = num1 + num2;
+			result = num1.add(num2);
 			break;
 		case "-":
-			result = num1 - num2;
+			result = num1.subtract(num2);
 			break;
 		case "×":
-			result = num1 * num2;
+			result = num1.multiply(num2);
 			break;
 		case "÷":
-			if (num2 != 0)
-				result = num1 / num2;
+			if (num2.compareTo(BigDecimal.ZERO) != 0)
+				result = num1.divide(num2, 10, RoundingMode.HALF_UP);
 			else
-				return "잘못된 입력입니다."; // 0으로 나눌 때!!
+				return "잘못된 입력입니다.";
 			break;
 		case "%":
-			result = num1 % num2;
+			result = num1.remainder(num2);
 			break;
+		default:
+			return display.getText();
 		}
-		return String.valueOf(result); // 연산결과를 문자열로 반환
+		return result.stripTrailingZeros().toPlainString();
 	}
 
 	public static void main(String[] args) {
 		new Calculator();
 	}
-
 }
