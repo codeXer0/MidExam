@@ -4,9 +4,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -18,7 +20,7 @@ import javax.swing.SwingConstants;
  * @version Eclipse 2022-03
  * 
  * @created 2024-10-18
- * @lastModified 2024-10-29
+ * @lastModified 2024-10-30
  * 
  */
 public class Calculator extends JFrame {
@@ -26,42 +28,35 @@ public class Calculator extends JFrame {
 	JButton button, historyButton;
 	String[] buttons = { "AC", "%", "←", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".",
 			"=" };
-
 	String operator = ""; // 연산자 저장을 위한 변수 선언
 	double num1 = 0; // 첫 번째 입력 숫자 저장
 	double num2 = 0; // 두 번째 입력 숫자 저장
-
 	boolean startNewNumber = true; // 새로 입력된 숫자 확인
+
+	// 계산 기록 저장을 위한 리스트
+	ArrayList<String> history = new ArrayList<>();
 
 	public Calculator() {
 		this.setTitle("계산기");
-
 		this.setSize(350, 500);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-
 		showNorth();
 		showCenter();
 		showSouth();
-
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
 
 	void showNorth() {
 		JPanel panel = new JPanel(new BorderLayout());
-
 		display = new JTextField("0");
 		display.setEditable(false);
-
 		display.setFont(new Font("Dialog", Font.PLAIN, 40));
 		display.setHorizontalAlignment(SwingConstants.RIGHT);
-
 		display.setBackground(Color.BLACK);
 		display.setForeground(Color.WHITE);
-
 		panel.add(display);
-
 		add(panel, BorderLayout.NORTH);
 	}
 
@@ -85,9 +80,37 @@ public class Calculator extends JFrame {
 		historyButton = new JButton("🖩");
 		historyButton.setFocusPainted(false);
 		historyButton.setFont(new Font("Dialog", Font.BOLD, 40));
+
+		// historyButton 클릭 시 계산 기록 창 표시
+		historyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showHistory();
+			}
+		});
+
 		panel.add(historyButton);
 		add(panel, BorderLayout.SOUTH);
+	}
 
+	/**
+	 * 계산 기록을 팝업 창에 표시하는 메소드입니다.
+	 * 
+	 * 만약 기록이 없다면 "계산 기록이 없습니다." 메시지를 표시합니다. 기록이 존재할 경우, StringBuilder를 사용하여 기록을 한
+	 * 줄씩 추가하여 JOptionPane을 통해 보여줍니다.
+	 * 
+	 * @see ChatGPT
+	 */
+	private void showHistory() {
+		if (history.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "계산 기록이 없습니다.");
+		} else {
+			StringBuilder sb = new StringBuilder();
+			for (String record : history) {
+				sb.append(record).append("\n");
+			}
+			JOptionPane.showMessageDialog(this, sb.toString(), "History", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	/**
@@ -145,7 +168,12 @@ public class Calculator extends JFrame {
 				break;
 			case "=": // 계산 수행
 				num2 = Double.parseDouble(display.getText());
-				display.setText(calculateResult());
+				String result = calculateResult();
+				display.setText(result);
+				/**
+				 * 사용자의 계산 기록을 history 리스트에 저장합니다.
+				 */
+				history.add(num1 + " " + operator + " " + num2 + " = " + result); // 기록 저장
 				startNewNumber = true;
 				break;
 			case ".": // 소수점 입력
@@ -162,7 +190,6 @@ public class Calculator extends JFrame {
 				}
 				break;
 			}
-
 		}
 	};
 
