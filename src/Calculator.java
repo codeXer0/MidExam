@@ -146,6 +146,9 @@ public class Calculator extends JFrame {
 
 		/**
 		 * historyButton에 마우스를 올렸을 때 rolloverColor로 배경색이 바뀌며, 마우스를 벗어나면 기본 색상으로 되돌아갑니다.
+		 * 
+		 * @see <a href ="https://movefast.tistory.com/48">마우스 이벤트 처리 참고 링크</a>
+		 * @see <a href="https://movefast.tistory.com/69">MouseEvent 참고 링크</a>
 		 */
 		historyButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -171,6 +174,15 @@ public class Calculator extends JFrame {
 		add(panel, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * 계산 기록을 팝업 창에 표시하는 메소드입니다.
+	 * 
+	 * 만약 기록이 없다면 "계산 기록이 없습니다." 메시지를 표시합니다. 기록이 존재할 경우, StringBuilder를 사용하여 기록을 한
+	 * 줄씩 추가하여 JOptionPane을 통해 보여줍니다.
+	 * 
+	 * @see <a href="https://movefast.tistory.com/69">JOptionPane 참고 링크</a>
+	 * @see ChatGPT
+	 */
 	private void showHistory() {
 		if (history.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "아직 기록이 없습니다.");
@@ -183,6 +195,26 @@ public class Calculator extends JFrame {
 		}
 	}
 
+	/**
+	 * 계산기의 각 연산버튼 클릭 이벤트를 처리하는 ActionListener입니다.
+	 * 
+	 * 사용자가 누른 연산버튼에 따라 숫자 입력, 사칙연산(+, -,×, ÷), 부호 변경(±), 소수점 입력, 나머지 연산(%), 초기화(AC)
+	 * 등의 기능을 수행합니다.
+	 * 
+	 * @param e 버튼 클릭 이벤트를 나타내며, 클릭된 버튼의 텍스트를 통해 기능을 결정합니다.
+	 * 
+	 *          버튼 기능 설명: - "AC": 모든 값을 초기화하고 display를 "0"으로 설정합니다. - "←": 현재 입력된
+	 *          숫자의 마지막 문자를 삭제합니다. 한글자만 남으면 "0"으로 설정됩니다. - "±": 현재 display에 표시된 숫자의
+	 *          부호를 변경합니다. - "%": 나머지 연산을 준비하고 첫 번째 숫자(num1)에 현재 값을 저장합니다. - "÷",
+	 *          "×", "-", "+": 해당 연산자에 따라 사칙연산을 수행하기 위해num1에 현재 값을 저장하고 operator를
+	 *          설정합니다. - "=": 설정된 연산자에 따라 num1과 display에 입력된 두번째 숫자(num2)를 연산하여 결과를
+	 *          display에 표시합니다. - ".": 소수점이 없는 경우 현재 숫자에 소수점을 추가합니다. - 기본 숫자: 숫자 버튼을
+	 *          눌렀을 때 display에 숫자를 추가합니다. 새로운 숫자입력이 시작되면 display를 새 숫자로 대체하고, 그렇지
+	 *          않으면 기존 숫자 뒤에 이어붙입니다.
+	 * 
+	 * @see <a href="https://firstblog912.tistory.com/137">버튼 이벤트 참고 링크</a>
+	 * @see ChatGPT
+	 */
 	ActionListener l = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -240,6 +272,17 @@ public class Calculator extends JFrame {
 		}
 	};
 
+	/**
+	 * 연산자(operator)에 따라 입력받은 num1과 num2에 대한 사칙연산을 수행하여 결과를 반환하는 메소드입니다.
+	 * 
+	 * - 덧셈("+"), 뺄셈("-"), 곱셈("×"), 나눗셈("÷"), 나머지("%") 연산을 지원합니다. - 부동 소수점 계산 오류를
+	 * 방지하기 위해 `BigDecimal`을 사용하여 정밀한 계산을 수행합니다. - 나눗셈 연산의 경우, 0으로 나누려 할 때에는 "잘못된
+	 * 입력입니다."라는 메시지를 반환합니다. - 결과 반환 시 `stripTrailingZeros().toPlainString()`을 사용하여
+	 * 불필요한 소수점을 제거합니다.
+	 *
+	 * @return 연산 결과를 '문자열'로 반환하며, 나눗셈에서 0으로 나누려 할 경우 오류 메시지를 반환합니다.
+	 * @see <a href="https://kcasey.tistory.com/7">계산기 작성 시 switch,if문 참고 링크</a>
+	 */
 	String calculateResult() {
 		BigDecimal result;
 		switch (operator) {
