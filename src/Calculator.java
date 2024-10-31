@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 /**
  * 기본적인 사칙연산을 할 수 있는 계산기 클래스입니다.
@@ -132,16 +131,8 @@ public class Calculator extends JFrame {
 			for (String record : history) {
 				sb.append(record).append("\n");
 			}
+			JOptionPane.showMessageDialog(this, sb.toString(), "계산 기록", JOptionPane.INFORMATION_MESSAGE);
 
-			// 계산기록 팝업창 배경색과 전경색 설정
-			UIManager.put("Panel.background", Color.BLACK); // 배경색
-			UIManager.put("OptionPane.messageForeground", Color.WHITE); // 전경색
-
-			JOptionPane.showMessageDialog(this, sb.toString(), "History", JOptionPane.INFORMATION_MESSAGE);
-
-			// 설정 초기화
-			UIManager.put("Panel.background", null);
-			UIManager.put("OptionPane.messageForeground", null);
 		}
 	}
 
