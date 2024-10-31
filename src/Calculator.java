@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 /**
  * 기본적인 사칙연산을 할 수 있는 계산기 클래스입니다.
@@ -56,7 +57,8 @@ public class Calculator extends JFrame {
 		JPanel panel = new JPanel(new BorderLayout());
 		display = new JTextField("0");
 		display.setEditable(false);
-		display.setFont(new Font("Dialog", Font.PLAIN, 40));
+		display.setBorder(null);
+		display.setFont(new Font("Dialog", Font.PLAIN, 50));
 		display.setHorizontalAlignment(SwingConstants.RIGHT);
 		display.setBackground(Color.BLACK);
 		display.setForeground(Color.WHITE);
@@ -72,7 +74,8 @@ public class Calculator extends JFrame {
 		for (String text : buttons) {
 			JButton button = new JButton(text);
 			button.setFocusPainted(false);
-			button.setFont(new Font("Dialog", Font.BOLD, 20));
+			button.setBorderPainted(false);
+			button.setFont(new Font("Dialog", Font.PLAIN, 25));
 			button.addActionListener(l); // 각 버튼에 ActionListener 추가
 
 			if (text.equals("=") || text.equals("÷") || text.equals("×") || text.equals("+") || text.equals("-")) {
@@ -93,9 +96,10 @@ public class Calculator extends JFrame {
 
 	void showSouth() {
 		JPanel panel = new JPanel(new BorderLayout());
-		historyButton = new JButton("🖩");
+		historyButton = new JButton("🕘");
 		historyButton.setFocusPainted(false);
-		historyButton.setFont(new Font("Dialog", Font.BOLD, 40));
+		historyButton.setBorderPainted(false);
+		historyButton.setFont(new Font("Dialog", Font.BOLD, 30));
 		historyButton.setBackground(Color.BLACK);
 		historyButton.setForeground(Color.WHITE);
 
@@ -117,6 +121,7 @@ public class Calculator extends JFrame {
 	 * 만약 기록이 없다면 "계산 기록이 없습니다." 메시지를 표시합니다. 기록이 존재할 경우, StringBuilder를 사용하여 기록을 한
 	 * 줄씩 추가하여 JOptionPane을 통해 보여줍니다.
 	 * 
+	 * @see <a href="https://movefast.tistory.com/69">JOptionPane 참고 링크</a>
 	 * @see ChatGPT
 	 */
 	private void showHistory() {
@@ -127,7 +132,16 @@ public class Calculator extends JFrame {
 			for (String record : history) {
 				sb.append(record).append("\n");
 			}
+
+			// 계산기록 팝업창 배경색과 전경색 설정
+			UIManager.put("Panel.background", Color.BLACK); // 배경색
+			UIManager.put("OptionPane.messageForeground", Color.WHITE); // 전경색
+
 			JOptionPane.showMessageDialog(this, sb.toString(), "History", JOptionPane.INFORMATION_MESSAGE);
+
+			// 설정 초기화
+			UIManager.put("Panel.background", null);
+			UIManager.put("OptionPane.messageForeground", null);
 		}
 	}
 
