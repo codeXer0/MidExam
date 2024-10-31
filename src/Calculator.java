@@ -20,8 +20,11 @@ import javax.swing.SwingConstants;
 public class Calculator extends JFrame {
 	JTextField display;
 	JButton button, historyButton;
+
+	// 연산버튼 생성을 위한 'buttons' 배열
 	String[] buttons = { "AC", "%", "←", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".",
 			"=" };
+
 	String operator = ""; // 연산자 저장을 위한 변수 선언
 	BigDecimal num1 = BigDecimal.ZERO; // 첫 번째 입력 숫자 저장
 	BigDecimal num2 = BigDecimal.ZERO; // 두 번째 입력 숫자 저장
