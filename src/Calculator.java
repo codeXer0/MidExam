@@ -17,16 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-/**
- * 기본적인 사칙연산을 할 수 있는 계산기 클래스입니다.
- * 
- * @author 2021011939 이동재
- * @version Eclipse 2022-03
- * 
- * @created 2024-10-18
- * @lastModified 2024-10-30
- * 
- */
 public class Calculator extends JFrame {
 	JTextField display;
 	JButton button, historyButton;
@@ -54,6 +44,12 @@ public class Calculator extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * 계산기 상단의 `display` 텍스트 필드를 설정하고 배치하는 메서드입니다.
+	 * 
+	 * display는 계산기의 결과를 보여주는 역할을 하며, 기본값은 "0"으로 설정됩니다. 사용자가 편집할 수 없고, 폰트, 색상, 정렬 등
+	 * 스타일이 지정되어 있습니다.
+	 */
 	void showNorth() {
 		JPanel panel = new JPanel(new BorderLayout());
 		display = new JTextField("0");
@@ -67,11 +63,23 @@ public class Calculator extends JFrame {
 		add(panel, BorderLayout.NORTH);
 	}
 
+	/**
+	 * 각 연산 버튼을 생성 & 버튼에 따라 기본 색상을 설정한 후 마우스를 올리면 색상이 짙어지도록 설정하는 메서드입니다.
+	 * 
+	 * 연산 기능은 ActionListener로 연결되고, 색상 효과는 MouseListener로 구현됩니다.
+	 */
 	void showCenter() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 4, 7, 7));
 		panel.setBackground(Color.black);
 
+		/**
+		 * for 루프를 이용하여 버튼 배열에 있는 text를 사용하여 `JButton`을 생성
+		 * 
+		 * 각 버튼에 기본 색상과 글꼴 스타일을 적용합니다.
+		 * 
+		 * 생성된 버튼들은 GridLayout으로 패널에 추가됩니다.
+		 */
 		for (String text : buttons) {
 			JButton button = new JButton(text);
 			button.setFocusPainted(false);
@@ -79,54 +87,74 @@ public class Calculator extends JFrame {
 			button.setFont(new Font("Dialog", Font.PLAIN, 25));
 			button.addActionListener(l); // 각 버튼에 ActionListener 추가
 
+			// 기본 버튼 색상 설정
+			Color defaultColor;
+			if (text.equals("=") || text.equals("÷") || text.equals("×") || text.equals("+") || text.equals("-")) {
+				defaultColor = Color.ORANGE;
+				button.setForeground(Color.WHITE);
+			} else if (text.equals("AC") || text.equals("%") || text.equals("←")) {
+				defaultColor = Color.LIGHT_GRAY;
+				button.setForeground(Color.WHITE);
+			} else {
+				defaultColor = Color.DARK_GRAY;
+				button.setForeground(Color.WHITE);
+			}
+			button.setBackground(defaultColor);
+
+			// 마우스를 올렸을 때만 색이 짙어지게 설정
+			Color rolloverColor = defaultColor.darker(); // 마우스를 올렸을 때 색
+
 			/**
-			 * 연산 버튼에 이벤트 핸들러 생성
-			 * 
-			 * 아직 수정 중**
-			 * 
-			 * @see <a href ="https://movefast.tistory.com/48">마우스 이벤트 처리 참고 링크</a>
-			 * @see <a href="https://movefast.tistory.com/69">MouseEvent 참고 링크</a>
+			 * 버튼에 마우스를 올렸을 때 배경색을 rolloverColor로 설정하고, 마우스가 버튼을 벗어나면 기본 색상으로 되돌립니다.
 			 */
 			button.addMouseListener(new MouseAdapter() {
-
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					// 마우스가 해당 컴포넌트 영역 안으로 들어올때 발생
-					button.setBackground(Color.DARK_GRAY); // 버튼 프레임 배경색 변경
-					System.out.println(this);
+					button.setBackground(rolloverColor);
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					//// 마우스가 해당 컴포넌트 영역 밖으로 나갈때 발생
-					button.setBackground(Color.YELLOW); // 버튼 배경색 변경
+					button.setBackground(defaultColor);
 				}
 			});
-
-			if (text.equals("=") || text.equals("÷") || text.equals("×") || text.equals("+") || text.equals("-")) {
-				button.setBackground(Color.ORANGE);
-				button.setForeground(Color.WHITE);
-			} else if (text.equals("AC") || text.equals("%") || text.equals("←")) {
-				button.setBackground(Color.LIGHT_GRAY);
-				button.setForeground(Color.WHITE);
-			} else {
-				button.setBackground(Color.DARK_GRAY);
-				button.setForeground(Color.WHITE);
-			}
 
 			panel.add(button);
 		}
 		add(panel, BorderLayout.CENTER);
 	}
 
+	/**
+	 * 계산 기록을 볼 수 있는 historyButton을 생성하고, 버튼에 마우스를 올릴 때 색이 짙어지는 효과를 추가합니다. 클릭 시
+	 * showHistory() 메서드를 통해 기록 창이 표시됩니다.
+	 */
 	void showSouth() {
 		JPanel panel = new JPanel(new BorderLayout());
 		historyButton = new JButton("🕘");
 		historyButton.setFocusPainted(false);
 		historyButton.setBorderPainted(false);
 		historyButton.setFont(new Font("Dialog", Font.BOLD, 30));
-		historyButton.setBackground(Color.BLACK);
+		historyButton.setBackground(Color.DARK_GRAY);
 		historyButton.setForeground(Color.WHITE);
+
+		// 기본 색상 및 상태에 따른 색상 변경 설정
+		Color defaultColor = Color.DARK_GRAY;
+		Color rolloverColor = defaultColor.darker();
+
+		/**
+		 * historyButton에 마우스를 올렸을 때 rolloverColor로 배경색이 바뀌며, 마우스를 벗어나면 기본 색상으로 되돌아갑니다.
+		 */
+		historyButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				historyButton.setBackground(rolloverColor);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				historyButton.setBackground(defaultColor);
+			}
+		});
 
 		// historyButton 클릭 시 계산 기록 창 표시
 		historyButton.addActionListener(new ActionListener() {
@@ -140,15 +168,6 @@ public class Calculator extends JFrame {
 		add(panel, BorderLayout.SOUTH);
 	}
 
-	/**
-	 * 계산 기록을 팝업 창에 표시하는 메소드입니다.
-	 * 
-	 * 만약 기록이 없다면 "계산 기록이 없습니다." 메시지를 표시합니다. 기록이 존재할 경우, StringBuilder를 사용하여 기록을 한
-	 * 줄씩 추가하여 JOptionPane을 통해 보여줍니다.
-	 * 
-	 * @see <a href="https://movefast.tistory.com/69">JOptionPane 참고 링크</a>
-	 * @see ChatGPT
-	 */
 	private void showHistory() {
 		if (history.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "아직 기록이 없습니다.");
@@ -158,30 +177,9 @@ public class Calculator extends JFrame {
 				sb.append(record).append("\n");
 			}
 			JOptionPane.showMessageDialog(this, sb.toString(), "계산 기록", JOptionPane.INFORMATION_MESSAGE);
-
 		}
 	}
 
-	/**
-	 * 계산기의 각 연산버튼 클릭 이벤트를 처리하는 ActionListener입니다.
-	 * 
-	 * 사용자가 누른 연산버튼에 따라 숫자 입력, 사칙연산(+, -,×, ÷), 부호 변경(±), 소수점 입력, 나머지 연산(%), 초기화(AC)
-	 * 등의 기능을 수행합니다.
-	 * 
-	 * @param e 버튼 클릭 이벤트를 나타내며, 클릭된 버튼의 텍스트를 통해 기능을 결정합니다.
-	 * 
-	 *          버튼 기능 설명: - "AC": 모든 값을 초기화하고 display를 "0"으로 설정합니다. - "←": 현재 입력된
-	 *          숫자의 마지막 문자를 삭제합니다. 한글자만 남으면 "0"으로 설정됩니다. - "±": 현재 display에 표시된 숫자의
-	 *          부호를 변경합니다. - "%": 나머지 연산을 준비하고 첫 번째 숫자(num1)에 현재 값을 저장합니다. - "÷",
-	 *          "×", "-", "+": 해당 연산자에 따라 사칙연산을 수행하기 위해num1에 현재 값을 저장하고 operator를
-	 *          설정합니다. - "=": 설정된 연산자에 따라 num1과 display에 입력된 두번째 숫자(num2)를 연산하여 결과를
-	 *          display에 표시합니다. - ".": 소수점이 없는 경우 현재 숫자에 소수점을 추가합니다. - 기본 숫자: 숫자 버튼을
-	 *          눌렀을 때 display에 숫자를 추가합니다. 새로운 숫자입력이 시작되면 display를 새 숫자로 대체하고, 그렇지
-	 *          않으면 기존 숫자 뒤에 이어붙입니다.
-	 * 
-	 * @see <a href="https://firstblog912.tistory.com/137">버튼 이벤트 참고 링크</a>
-	 * @see ChatGPT
-	 */
 	ActionListener l = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -239,17 +237,6 @@ public class Calculator extends JFrame {
 		}
 	};
 
-	/**
-	 * 연산자(operator)에 따라 입력받은 num1과 num2에 대한 사칙연산을 수행하여 결과를 반환하는 메소드입니다.
-	 * 
-	 * - 덧셈("+"), 뺄셈("-"), 곱셈("×"), 나눗셈("÷"), 나머지("%") 연산을 지원합니다. - 부동 소수점 계산 오류를
-	 * 방지하기 위해 `BigDecimal`을 사용하여 정밀한 계산을 수행합니다. - 나눗셈 연산의 경우, 0으로 나누려 할 때에는 "잘못된
-	 * 입력입니다."라는 메시지를 반환합니다. - 결과 반환 시 `stripTrailingZeros().toPlainString()`을 사용하여
-	 * 불필요한 소수점을 제거합니다.
-	 *
-	 * @return 연산 결과를 '문자열'로 반환하며, 나눗셈에서 0으로 나누려 할 경우 오류 메시지를 반환합니다.
-	 * @see <a href="https://kcasey.tistory.com/7">계산기 작성 시 switch,if문 참고 링크</a>
-	 */
 	String calculateResult() {
 		BigDecimal result;
 		switch (operator) {
