@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -45,6 +47,123 @@ public class Calculator extends JFrame {
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
+
+		// KeyListener 등록
+		display.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				handleKeyPress(e);
+			}
+		});
+
+		// display에 focus 설정
+		display.setFocusable(true);
+		display.requestFocusInWindow();
+	}
+
+	/**
+	 * 키보드 입력을 처리하는 메서드입니다.
+	 * 
+	 * 숫자 키와 주요 연산 기호(+,-,*,/,=)에 따라 연산을 수행합니다. Enter 키를 누르면 계산이 완료됩니다.
+	 *
+	 * @param e 키보드 이벤트를 나타내며, 입력된 키에 따라 기능을 수행합니다.
+	 */
+	private void handleKeyPress(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		char keyChar = e.getKeyChar();
+
+		if (Character.isDigit(keyChar)) {
+			// 숫자 키 입력 시 처리
+			if (startNewNumber) {
+				display.setText(Character.toString(keyChar));
+				startNewNumber = false;
+			} else {
+				display.setText(
+						display.getText().equals("0") ? Character.toString(keyChar) : display.getText() + keyChar);
+			}
+		} else {
+			switch (keyCode) {
+			case KeyEvent.VK_ENTER:
+				// Enter 키를 누르면 계산 수행
+				num2 = new BigDecimal(display.getText());
+				String result = calculateResult();
+				display.setText(result);
+				history.add(num1 + " " + operator + " " + num2 + " = " + result); // 기록 저장
+				startNewNumber = true;
+				break;
+			case KeyEvent.VK_BACK_SPACE:
+				// 백스페이스 키로 한 자리 삭제
+				String currentText = display.getText();
+				display.setText(currentText.length() > 1 ? currentText.substring(0, currentText.length() - 1) : "0");
+				break;
+			case KeyEvent.VK_ESCAPE:
+				// ESC 키로 초기화 (AC)
+				display.setText("0");
+				num1 = BigDecimal.ZERO;
+				num2 = BigDecimal.ZERO;
+				operator = "";
+				startNewNumber = true;
+				break;
+			default:
+				handleOperatorKey(keyChar);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * 연산자 키 입력을 처리하는 메서드입니다.
+	 * 
+	 * 사용자가 누른 키에 따라 사칙연산(+, -, ×, ÷) 및 기타 연산(±, %)을 설정합니다.
+	 *
+	 * @param keyChar 입력된 키 문자로, 해당 문자에 맞는 연산자를 설정합니다.
+	 */
+	private void handleOperatorKey(char keyChar) {
+		switch (keyChar) {
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+			num1 = new BigDecimal(display.getText());
+			operator = convertOperator(keyChar);
+			startNewNumber = true;
+			break;
+		case '%':
+			num1 = new BigDecimal(display.getText());
+			operator = "%";
+			startNewNumber = true;
+			break;
+		case '=':
+			// '=' 키를 누르면 계산 수행
+			num2 = new BigDecimal(display.getText());
+			String result = calculateResult();
+			display.setText(result);
+			history.add(num1 + " " + operator + " " + num2 + " = " + result);
+			startNewNumber = true;
+			break;
+		case '±':
+			// ± 키로 부호 변경
+			BigDecimal value = new BigDecimal(display.getText());
+			display.setText(value.negate().toString());
+			break;
+		}
+	}
+
+	/**
+	 * 키보드의 연산자 기호를 프로그램의 연산 기호로 변환합니다.
+	 * 
+	 * @param keyChar 키보드에서 입력된 연산자 기호입니다.
+	 * @return 변환된 연산자 문자열을 반환합니다.
+	 */
+	private String convertOperator(char keyChar) {
+		switch (keyChar) {
+		case '*':
+			return "×";
+		case '/':
+			return "÷";
+		default:
+			return Character.toString(keyChar);
+		}
 	}
 
 	/**
