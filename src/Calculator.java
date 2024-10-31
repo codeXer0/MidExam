@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -77,6 +79,30 @@ public class Calculator extends JFrame {
 			button.setFont(new Font("Dialog", Font.PLAIN, 25));
 			button.addActionListener(l); // 각 버튼에 ActionListener 추가
 
+			/**
+			 * 연산 버튼에 이벤트 핸들러 생성
+			 * 
+			 * 아직 수정 중**
+			 * 
+			 * @see <a href ="https://movefast.tistory.com/48">마우스 이벤트 처리 참고 링크</a>
+			 * @see <a href="https://movefast.tistory.com/69">MouseEvent 참고 링크</a>
+			 */
+			button.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// 마우스가 해당 컴포넌트 영역 안으로 들어올때 발생
+					button.setBackground(Color.DARK_GRAY); // 버튼 프레임 배경색 변경
+					System.out.println(this);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					//// 마우스가 해당 컴포넌트 영역 밖으로 나갈때 발생
+					button.setBackground(Color.YELLOW); // 버튼 배경색 변경
+				}
+			});
+
 			if (text.equals("=") || text.equals("÷") || text.equals("×") || text.equals("+") || text.equals("-")) {
 				button.setBackground(Color.ORANGE);
 				button.setForeground(Color.WHITE);
@@ -125,7 +151,7 @@ public class Calculator extends JFrame {
 	 */
 	private void showHistory() {
 		if (history.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "계산 기록이 없습니다.");
+			JOptionPane.showMessageDialog(this, "아직 기록이 없습니다.");
 		} else {
 			StringBuilder sb = new StringBuilder();
 			for (String record : history) {
