@@ -19,3 +19,9 @@
 - 사용자 친화적인 UI -
 : iPhone 운영체제인 IOS 버전의 계산기 디자인과 유사하게 버튼 색상을 구분하여 인터페이스를 구현했습니다.
 : 마우스를 올릴 때 시각적인 효과가 추가되어 사용할 때 용이합니다.
+
+< Javadoc 작성법 참고 링크 >
+https://parkadd.tistory.com/137
+
+< Github README.md 작성법 참고링크 >
+https://12716.tistory.com/entry/Github-GIthub%EC%97%90%EC%84%9C-READMEmd-%EC%9E%91%EC%84%B1%ED%95%98%EA%B8%B0
